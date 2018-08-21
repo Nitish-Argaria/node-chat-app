@@ -1,5 +1,6 @@
 var socket = io();
 
+
 function scrollToBottom () {
 	//selectos
 	var messages = jQuery('#messages');
@@ -20,12 +21,18 @@ function scrollToBottom () {
 
 
 socket.on('connect',function(argument) {
-	// body...
+	var params = jQuery.deparam(window.location.search);
 
-	console.log('Connected to server');
-	socket.emit('createEmail',{
-		to: 'nitish@gmail.com',
-		text: 'Hey this is Nitish'
+	socket.emit('join',params,function (err) {
+		if(err)
+		{
+			alert(err);
+			window.location.href = '/';
+
+		}
+		else{
+			console.log('No error');
+		}
 	});
 	// socket.emit('createMessage',{
 	// 	from:"shivangi",
@@ -35,6 +42,16 @@ socket.on('connect',function(argument) {
 
 socket.on('disconnect',function(){
 	console.log('Disconnected from server');
+});
+
+socket.on('updateUserList',function(users) {
+	console.log('User list',users);
+	var ul =jQuery('<ul></ul>');
+	users.forEach(function(user){
+		ul.append(jQuery('<li></li>').text(user));
+
+	});
+	jQuery('#users').html(ul);
 });
 
 socket.on('newMessage',function(message){
