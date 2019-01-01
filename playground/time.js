@@ -18,4 +18,6 @@ var date = moment(createdAt);
 //10:35 am
 console.log(date.format('h:mm a'))
 //learning git
-//git change through nitish and not changing from the master
+
+//git change through nitish
+
